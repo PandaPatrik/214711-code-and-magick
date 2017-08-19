@@ -185,23 +185,21 @@
   var wizardSpeed = 3;
   var wizardWidth = 70;
 
-var getWizardHeight = function(width) 
+  var getWizardHeight = function(width)
   {
-    getWizardHeight = width * 1.337;
-    return getWizardHeight;
+    var smth = width * 1.337;
+    return smth;
   };
 
-  var result = getWizardHeight(wizardxWidth);
-  
   var getWizardX = function(width)
   {
-    var WizardX = width * 2;
+    var WizardX = width / 2;
     return WizardX;
   };
 
   var getWizardY = function(height)
   {
-    var WizardY = height * (2 / 3);
+    var WizardY = height * (1/3);
     return WizardY;
   };
 
