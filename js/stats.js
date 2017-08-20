@@ -11,7 +11,6 @@ window.renderStatistics = function (ctx, names, times) {
 
   ctx.fillText('Поздравляем вы победили!', 120, 40);
   ctx.fillText('Список результатов:', 120, 60);
-
   var max = -1;
   var maxIndex = -1;
 
@@ -23,18 +22,21 @@ window.renderStatistics = function (ctx, names, times) {
     }
   }
 
-  var histogramWidth = 150;              // px;
-  var step = histogramWidth / (max - 0); // px;
-  ctx.fillText('Худшее время: ' + max.toFixed(2) + 'мс у игрока ' + names[maxIndex], 120, 60);
+  // -------------------------------------------------------------------------------------------
 
-  var barHeigth = 20; // px;
-  var indent = 40;    // px;
-  var initialX = 120; // px;
-  var initialY = 96;  // px;
+  var histogramWidth = 150;              // область гистограммы
+  var step = histogramWidth / (max - 0); // пропорция шага
 
-  for(var i = 0; i < times.length; i++) {
-    ctx.fillRect(initialX, initialY + indent * i, times[i] * step, barHeigth);
-    ctx.fillText(names[i], initialX + histogramWidth, initialY + indent * i);
+  var initialY = 240; // начало Y для каждого из столбиков
+  var initialX = 150; // начало X для каждого из столбиков
+  var indent = 90;    // отступ
+  var barHeigth = 40; // высота столбика
+
+  for (var i = 0; i < times.length; i++) {
+    ctx.fillRect(initialX + indent * i, initialY, barHeigth, times[i] * step * -1);
+
+    ctx.fillText(names[i], initialX + indent * i, initialY + 20);
+    ctx.fillText(times[i].toFixed(2), initialX + indent * i, initialY - histogramWidth - 10);
   }
 
 };
