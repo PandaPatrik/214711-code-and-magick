@@ -1,4 +1,11 @@
 window.renderStatistics = function (ctx, names, times) {
+
+  var histogramWidth = 150; // область гистограммы
+  var initialY = 240; // начало Y для каждого из столбиков
+  var initialX = 150; // начало X для каждого из столбиков
+  var indent = 90; // отступ
+  var barHeigth = 40; // высота столбика
+
   // тень поля
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
   ctx.fillRect(110, 20, 430, 280);
@@ -11,32 +18,41 @@ window.renderStatistics = function (ctx, names, times) {
 
   ctx.fillText('Поздравляем вы победили!', 120, 40);
   ctx.fillText('Список результатов:', 120, 60);
-  var max = -1;
-  var maxIndex = -1;
 
-  for (var i = 0 ; i < times.length; i++) {
-    var time = times[i];
-    if (time > max) {
-      max = time;
-      maxIndex = i;
+  var findMax = function (args) {
+    var max = -1;
+    for (var i = 0; i < args.length; i++) {
+      var arg = args[i];
+      if (arg > max) {
+        max = arg;
+      }
     }
-  }
+    return max;
+  };
 
-  // -------------------------------------------------------------------------------------------
+  var drawRect = function (numElem) {
+    if (names[numElem] == 'Вы') {
+      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+    }
+    else {
+      ctx.globalAlpha = Math.random();
+      ctx.fillStyle = 'rgb(0, 0, 255)';
+    }
 
-  var histogramWidth = 150;              // область гистограммы
-  var step = histogramWidth / (max - 0); // пропорция шага
+    ctx.fillRect(initialX + indent * numElem, initialY, barHeigth, times[numElem] * step * -1);
+    ctx.globalAlpha = 1;
+  };
 
-  var initialY = 240; // начало Y для каждого из столбиков
-  var initialX = 150; // начало X для каждого из столбиков
-  var indent = 90;    // отступ
-  var barHeigth = 40; // высота столбика
+  var drawText = function (numElem) {
+    ctx.fillText(names[numElem], initialX + indent * numElem, initialY + 20);
+    ctx.fillText(times[numElem].toFixed(0), initialX + indent * numElem, initialY - times[numElem] * step - 10);
+  };
+
+  var step = histogramWidth / (findMax(times) - 0); // пропорция шага
 
   for (var i = 0; i < times.length; i++) {
-    ctx.fillRect(initialX + indent * i, initialY, barHeigth, times[i] * step * -1);
-
-    ctx.fillText(names[i], initialX + indent * i, initialY + 20);
-    ctx.fillText(times[i].toFixed(2), initialX + indent * i, initialY - histogramWidth - 10);
+    drawRect(i);
+    drawText(i);
   }
 
 };
