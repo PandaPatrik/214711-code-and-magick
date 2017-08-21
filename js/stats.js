@@ -1,3 +1,4 @@
+'use strict';
 window.renderStatistics = function (ctx, names, times) {
 
   var histogramWidth = 150; // область гистограммы
@@ -31,11 +32,13 @@ window.renderStatistics = function (ctx, names, times) {
   };
 
   var drawRect = function (numElem) {
-    if (names[numElem] == 'Вы') {
+    if (names[numElem] === 'Вы') {
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-    }
-    else {
-      ctx.globalAlpha = Math.random();
+    } else {
+      var visibility = function (min, max) {
+        var intra = min - 0.5 + Math.random() * (max - min + 1); intra = Math.round(intra); return intra;
+      };
+      ctx.globalAlpha = visibility(3, 8) * 0.1;
       ctx.fillStyle = 'rgb(0, 0, 255)';
     }
 
